@@ -49,6 +49,14 @@ systemctl start mysqld  &>>$LOG_FILE_NAME
 VALIDATE $? "Strating MySQL Server"
 
 
-mysql_secure_installation --set-root-pass ExpenseApp@1
-VALIDATE $? "Setting up root password"
+mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE_NAME
 
+if[ $? -ne 0 ]
+then 
+    echo "MySQL Root password not setup" &>>$LOG_FILE_NAME
+     mysql_secure_installation --set-root-pass ExpenseApp@1 
+    VALIDATE $? "Setting up root password"
+else
+    echo -e "Mysql Root already setup .... $Y SKIPPING $N "
+
+fi
