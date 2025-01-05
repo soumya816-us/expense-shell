@@ -49,8 +49,15 @@ VALIDATE $? "Enabling NODEJS 20"
 dnf install nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "Installing NODEJS"
 
-useradd expense &>>$LOG_FILE_NAME
-VALIDATE $? "ADDING EXPENSE user "
+
+id expense &>>$LOG_FILE_NAME
+if [ $? -ne 0 ]
+then
+    useradd expense &>>$LOG_FILE_NAME
+    VALIDATE $? "ADDING EXPENSE user "
+else
+    echo -e " Expense user already Exist ... $Y skipping $N " 
+fi
 
 mkdir -p /app &>>$LOG_FILE_NAME
 VALIDATE $? " CREATING APP Directory"
